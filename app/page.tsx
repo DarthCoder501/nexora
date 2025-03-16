@@ -3,6 +3,7 @@
 //Using the useChat hook to provide and handle user input
 import { useChat } from "@ai-sdk/react";
 import { useRef, useState } from "react";
+import { Input } from "@/components/ui/input";
 
 /*
 messages handles the chat history
@@ -16,6 +17,27 @@ export default function Chat() {
   // creates state to hold the files and create a ref to the file input field
   const [files, setFiles] = useState<FileList | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("File upload failed");
+      }
+
+      const result = await response.json();
+      console.log("File uploaded successfully:", result);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
 
   return (
     // Container for the chat input box
@@ -48,13 +70,16 @@ export default function Chat() {
         // Forces the input box to be at the bottom on the page
         className="fixed bottom-0 w-full max-w-md mb-8 border border-gray-300 rounded shadow-xl"
         // Function to run when the form is submmited ( enter is pressed )
-        onSubmit={(event) => {
+        onSubmit={async (event) => {
+          event.preventDefault(); // Prevents default form submission
+
+          if (files && files.length > 0) {
+            handleFileUpload(files[0]);
+          }
           // Calls handleSubmit to process the data
           handleSubmit(event, {
-            // Includes the uploaded PDF files
             experimental_attachments: files,
           });
-
           // Clears the files state after form is submitted
           setFiles(undefined);
           // If the file input field exitsts then clear the value
@@ -75,7 +100,7 @@ export default function Chat() {
           multiple
           ref={fileInputRef}
         />
-        <input
+        <Input
           // Styles the input field
           className="w-full p-2"
           value={input}

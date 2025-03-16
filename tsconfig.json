@@ -27,7 +27,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/middleware.ts."
+    "app/middleware.ts.",
+    "lib/ingest.js",
+    "lib/get-embeddings.js"
   ],
   "exclude": ["node_modules"]
 }

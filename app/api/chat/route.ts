@@ -1,5 +1,6 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { streamText, Message } from "ai";
+import { queryResults } from "@/lib/retrieve-docments.js";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;

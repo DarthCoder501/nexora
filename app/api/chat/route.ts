@@ -6,6 +6,7 @@ import { queryResults } from "@/lib/retrieve-docments.js";
 export const maxDuration = 30;
 
 // Asynchronous POST request handler & extract messages from the body of the request.
+
 export async function POST(req: Request) {
   const { messages }: { messages: Message[] } = await req.json();
 

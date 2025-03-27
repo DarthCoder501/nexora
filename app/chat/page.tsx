@@ -5,6 +5,7 @@ import { useChat } from "@ai-sdk/react";
 import { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Upload } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 /*
 messages handles the chat history
@@ -46,9 +47,20 @@ export default function Chat() {
       <div className="w-full max-w-xl bg-white shadow-md rounded-2xl p-6">
         <div className="mb-4 max-h-[400px] overflow-y-auto">
           {messages.map((m) => (
-            <div key={m.id} className="whitespace-pre-wrap">
-              {m.role === "user" ? "User: " : "AI: "}
-              {m.content}
+            <div
+              key={m.id}
+              className={`mb-4 p-4 rounded-lg ${
+                m.role === "assistant"
+                  ? "bg-gray-100 text-gray-900"
+                  : "bg-blue-100 text-gray-900"
+              }`}
+            >
+              <div className="font-bold mb-2 text-black">
+                {m.role === "user" ? "You: " : "AI: "}
+              </div>
+              <div className="prose prose-stone max-w-none">
+                <ReactMarkdown>{m.content}</ReactMarkdown>
+              </div>
               <div>
                 {m?.experimental_attachments
                   ?.filter((attachment) =>
@@ -56,13 +68,12 @@ export default function Chat() {
                   )
                   .map((attachment, index) =>
                     attachment.contentType?.startsWith("application/pdf") ? (
-                      // Render an iframe for each PDF
                       <iframe
                         key={`${m.id}-${index}`}
-                        src={attachment.url} // URL of the PDF
-                        width={500} // Height of the render
-                        height={600} // Width of the render
-                        title={attachment.name ?? `attachment-${index}`} // Title of the render
+                        src={attachment.url}
+                        width={500}
+                        height={600}
+                        title={attachment.name ?? `attachment-${index}`}
                       />
                     ) : null
                   )}
@@ -93,17 +104,26 @@ export default function Chat() {
           }}
         >
           {/* Upload Button */}
-          <label htmlFor="file-upload" className="cursor-pointer p-2">
-            <Upload className="w-6 h-6 text-gray-500 hover:text-blue-500" />
-          </label>
-          <input
-            id="file-upload"
-            type="file"
-            className="hidden"
-            onChange={(event) => setFiles(event.target.files ?? undefined)}
-            multiple
-            ref={fileInputRef}
-          />
+          <div className="flex items-center gap-4">
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer p-2 flex items-center gap-2 hover:bg-gray-100 rounded-lg"
+            >
+              <Upload className="w-6 h-6 text-gray-500" />
+              <span className="text-gray-500">Upload PDF</span>
+              {files && files[0] && (
+                <span className="text-sm text-gray-500">{files[0].name}</span>
+              )}
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              className="hidden"
+              onChange={(event) => setFiles(event.target.files ?? undefined)}
+              multiple
+              ref={fileInputRef}
+            />
+          </div>
           {/* Input Field */}
           <div className="relative w-full">
             <Input

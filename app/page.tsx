@@ -8,7 +8,9 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 to-white">
       <div className="text-center space-y-8 max-w-3xl px-4">
-        <h1 className="text-5xl font-bold tracking-tight">Welcome to Nexora</h1>
+        <h1 className="text-5xl font-bold tracking-tight text-black">
+          Welcome to Nexora
+        </h1>
         <p className="text-xl text-muted-foreground">
           Your AI-powered academic assistant that helps you understand and learn
           from your documents.

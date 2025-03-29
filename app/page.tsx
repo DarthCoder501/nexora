@@ -1,6 +1,12 @@
 "use client";
 
-import { SignInButton, SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import {
+  SignInButton,
+  SignUpButton,
+  SignOutButton,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -32,11 +38,18 @@ export default function LandingPage() {
           </SignedOut>
 
           <SignedIn>
-            <Link href="/chat">
-              <Button size="lg" className="text-lg px-8">
-                Go to Dashboard
-              </Button>
-            </Link>
+            <div>
+              <Link href="/chat">
+                <Button size="lg" className="text-lg px-8">
+                  Go to Workspace
+                </Button>
+              </Link>
+              <SignOutButton>
+                <Button size="lg" variant="outline" className="text-lg px-8">
+                  Sign Out
+                </Button>
+              </SignOutButton>
+            </div>
           </SignedIn>
         </div>
 

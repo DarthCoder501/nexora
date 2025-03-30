@@ -4,7 +4,9 @@
 import { useChat } from "@ai-sdk/react";
 import { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
+import { SignedIn, SignOutButton } from "@clerk/nextjs";
 import ReactMarkdown from "react-markdown";
 
 /*
@@ -44,6 +46,15 @@ export default function Chat() {
   return (
     // Container for the chat input box
     <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-slate-50 to-white">
+      <SignedIn>
+        <div className="absolute top-4 right-4">
+          <SignOutButton>
+            <Button size="lg" variant="outline" className="text-lg px-8">
+              Sign Out
+            </Button>
+          </SignOutButton>
+        </div>
+      </SignedIn>
       <div className="w-full max-w-xl bg-white shadow-md rounded-2xl p-6">
         <div className="mb-4 max-h-[400px] overflow-y-auto">
           {messages.map((m) => (
